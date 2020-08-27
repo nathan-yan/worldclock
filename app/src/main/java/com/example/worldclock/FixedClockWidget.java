@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.example.worldclock.WorldClock;
@@ -22,18 +24,20 @@ import java.util.TimerTask;
  */
 public class FixedClockWidget extends AppWidgetProvider {
     public static int t = 0;
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
+        Spanned time_text = Html.fromHtml(
+                "It's <span style = 'color: #ffffff'>ten in the morning</span> in"
+        );
 
-        CharSequence locationText = WorldClock.get_location(4 * 3600 + 20 * 60);
+        int offset = -2 * 3600;
+
+        CharSequence locationText = WorldClock.get_location(offset);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.fixed_clock_widget);
-        views.setTextViewText(R.id.time_text, Html.fromHtml(
-                "It's <span style = 'color: #ffffff'>four twenty</span> in"
-        ));
+        views.setTextViewText(R.id.time_text, time_text);
         views.setTextViewText(R.id.location_text, locationText);
         t++;
 
